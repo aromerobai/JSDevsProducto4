@@ -65,7 +65,7 @@ async function actualizarVista() {
 }
 
 function cargarSemestresDesdeAPI() {
-    fetch('https://tf7kj3-3000.csb.app/api', {
+    fetch('http://localhost:3000/api', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -111,7 +111,7 @@ function cargarSemestresDesdeAPI() {
 
 function guardarSemestreEnServidor(nombre, descripcion, anno, inicio, final, color) {
     
-    fetch('https://tf7kj3-3000.csb.app/api', {
+    fetch('http://localhost:3000/api', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -181,7 +181,7 @@ function eliminarElemento(indice) {
     // Agrega un evento al botón de aceptar
     document.getElementById("btnAceptar").addEventListener("click", function () {
         //Lo eleminamos del servidor
-        fetch('https://tf7kj3-3000.csb.app/api', {
+        fetch('http://localhost:3000/api', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -213,7 +213,7 @@ function eliminarElemento(indice) {
     });
 }
 
-var socket = io.connect('https://tf7kj3-3000.csb.app/'); // Conectarse al servidor Socket.IO
+var socket = io.connect('http://localhost:3000/'); // Conectarse al servidor Socket.IO
 
 socket.on('semestreCreado', function(data) {
     if (data.status === "ok") {

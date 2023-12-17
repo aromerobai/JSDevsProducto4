@@ -452,7 +452,7 @@ function guardarSubjectEnServidor(
   estado
 ) {
   return new Promise((resolve, reject) => {
-    fetch("https://tf7kj3-3000.csb.app/api", {
+    fetch("http://localhost:3000/api", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -505,7 +505,7 @@ function guardarSubjectEnServidor(
 
 async function getAllSubjects() {
   try {
-    const response = await fetch("https://tf7kj3-3000.csb.app/api", {
+    const response = await fetch("http://localhost:3000/api", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -549,7 +549,7 @@ async function getAllSubjects() {
 }
 
 const updateSubjectStateMutation = async (id, newState) => {
-  const graphqlUrl = "https://tf7kj3-3000.csb.app/api"; // La URL de tu API GraphQL
+  const graphqlUrl = "http://localhost:3000/api"; // La URL de tu API GraphQL
 
   const requestBody = {
     query: `
@@ -589,7 +589,7 @@ const updateSubjectStateMutation = async (id, newState) => {
 
 function eliminarAsignaturaEnServidor(id) {
   return new Promise((resolve, reject) => {
-    fetch("https://tf7kj3-3000.csb.app/api", {
+    fetch("http://localhost:3000/api", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -668,7 +668,7 @@ function showMessage(message, messageType) {
   messageContainer.innerHTML = `<div class="alert alert-${messageType}" role="alert">${message}</div>`;
 }
 
-var socket = io.connect('https://tf7kj3-3000.csb.app/'); // Conectarse al servidor Socket.IO
+var socket = io.connect('http://localhost:3000/'); // Conectarse al servidor Socket.IO
 
 socket.on('subjectCreada', function(data) {
   if (data.status === "ok") {
