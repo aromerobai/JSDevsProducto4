@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semestres</title>
+    <link rel="stylesheet" href="../css/styles.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="../js/detalle.js"></script>   
+    <script>
+        var parametrosURL = obtenerParametrosDeURL();
+    </script>
+    <!-- apalac socket -->
+    <!-- Incluye el script de Socket.IO -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
+
+</head>
+<!--Barra de Navegación-->
+<nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Curso</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="./index.html">Inicio</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<body>
+<!--Modal mostrar todos los detalles del Semestre-->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+             <h1 class="modal-title fs-5" id="exampleModalLabel">Detalles Semestre</h1>
+             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <label style="font-style:oblique; font-weight: 750;">Descripcion del semestre: </label>
+                <label for="descripcion" id="descripcionLabel"></label><br>
+                <label style="font-style:oblique; font-weight: 750;">Año del semestre: </label>
+                <label for="anno" id="anno"></label><br>
+                <label style="font-style:oblique; font-weight: 750;">Fecha de inicio del semestre: </label>
+                <label for="inicio" id="inicio"></label><br>
+                <label style="font-style:oblique; font-weight: 750;">Fecha de fin del semestre</label>
+                <label for="final" id="final"></label><br>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Ini apalac Modal adjuntar fichero -->
+<!-- Modal de Adjuntar Fichero -->
+<div class="modal fade" id="AttachFileModal" tabindex="-1" aria-labelledby="AttachFileModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="AttachFileModalLabel">Adjuntar Fichero</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <form id="formArchivo" action="/subir-archivo" method="post" enctype="multipart/form-data">
+                <input type="file" name="fileInput">
+                <button type="submit">Subir Archivo</button>
+              </form>
+            </div>
+            </form>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- Agrega este elemento donde desees mostrar mensajes -->
+<div id="messageContainer"></div>
+<!--Fin apalac Modal adjuntar fichero-->
+
+<div class="encabezado" id="encabezado">
+    <!--Encabezado añadido desde javascript-->
+</div>
+<body>
+    <div class="container">          
+        <div class="row justify-content-between">
+          <div id="asignaturas-pannel" class="col overflow-auto pannel" ondrop="drop(event)" ondragover="allowDrop(event)">  
+            <div class="col-title">
+              <h2>Empezada
+                <button type="button" class="btn btn-primary" onclick="modalAddCard('asignaturas-pannel')" data-bs-toggle="modal" data-bs-target="#AddUpdCard">+</button>
+              </h2>                    
+            </div>                                                         
+          </div>              
+          <div id="aprobada-pannel" class="col overflow-auto pannel" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <div class="col-title">
+              <h2>Aprobada
+                <button type="button" class="btn btn-primary" onclick="modalAddCard('aprobada-pannel')" data-bs-toggle="modal" data-bs-target="#AddUpdCard">+</button>
+              </h2>                                                  
+            </div>                              
+          </div>              
+          <div id="suspendida-pannel" class="col overflow-auto pannel" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <div class="col-title">
+              <h2>Suspendida
+                <button type="button" class="btn btn-primary" onclick="modalAddCard('suspendida-pannel')" data-bs-toggle="modal" data-bs-target="#AddUpdCard">+</button>
+              </h2>
+            </div>                
+          </div>              
+        </div>                                   
+      </div>                  
+    </div>
+    <div id="AddUpdCard" class="modal fade" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 id="modalTitle" class="modal-title fs-5"></h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="title">Nombre de la asignatura</label>
+                <input id="title" type="text" class="form-control" placeholder="Título de tarjeta">                  
+              </div>
+              <div class="form-group">
+                <label for="description">Descripción de la asignatura</label>
+                <input id="description" type="text" class="form-control" placeholder="Descripcion">
+              </div>
+              <div class="form-group my-3">
+                <label for="difficulty" >Dificultad</label>
+                <select id="difficulty" class="form-control">
+                    <option value="facil" >Fácil</option>
+                    <option value="intermedio">Intermedio</option>
+                    <option value="dificil">Difícil</option>
+                </select>
+              </div>
+              <input type="hidden" id="panelIdField" value="">
+              <button id="add-card" type="button" class="btn btn-primary" data-bs-dismiss="modal">Agregar</button>
+              <button id="update-card" type="button" class="btn btn-primary" data-bs-dismiss="modal">Modificar</button>
+            </form>
+          </div>            
+        </div>
+      </div>
+    </div>
+    <div id="DeleteCard" class="modal fade" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5">Eliminar asignautra</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>  
+              <div class="modal-body">
+                <p>¿Desea eliminar la asignatura?</p>
+              </div>   
+              <div class="modal-footer">
+                <button id="DeleteBtn" type="button" class="btn btn-danger" data-bs-dismiss="modal">Eliminar</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              </div>  
+          </div>         
+      </div>      
+    </div>      
+    <div class="modal fade" id="customAlertModal" tabindex="-1" aria-labelledby="customAlertModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="customAlertModalLabel">Mensaje</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="customAlertMessage">
+            <!-- El mensaje se insertará aquí -->
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="customAlertOkButton">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>  
+<script src="../js/asignaturas.js"></script>
+</body>
+</html>

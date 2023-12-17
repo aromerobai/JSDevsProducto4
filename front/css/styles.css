@@ -1,0 +1,94 @@
+h1, h2 {
+    margin-bottom: 0.5rem; /* Puedes ajustar el valor según tus necesidades */
+}
+
+.vertical-center {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-box {
+    border: 1px solid #bebebe;
+    padding: 10px;
+    margin: 10px;
+    background-color: #bbbbbb;
+}
+
+.container-drop {
+    min-height: 100px;
+    border: 2px dashed #aaa;
+    background-color: #eee;
+}
+
+.draggable-item {
+    cursor: pointer;
+    background-color: #3498db;
+    color: white;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+.pannel {    
+    width: 100px; 
+    height: 720px;   
+    padding: 10px;    
+    margin-right: 50px;
+    margin-bottom: 50px;
+    border-color: black;
+    border: 2cap;    
+    background-color: #cfcfcf;    
+}
+
+.col-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.navbar {
+    margin-bottom: 20px;
+}
+.card {
+    max-width: 540px;
+    margin: 0 auto;
+}
+
+
+.btn-delete {
+    margin-bottom: 15px;
+    float: right;
+}
+
+.dashboards {
+    float: left;
+    display: block;
+    margin-left: 2rem;
+}
+
+.project-title {
+    text-align: center; 
+}
+
+.dashboards-title {             
+    margin-bottom: 40px;  
+    margin-left: 40px;  
+}
+
+.card-img-top{
+    height: 150px;
+    width: 100px;
+}
+
+.col-4 {
+    margin-bottom: 20px;
+}
+
+.input-label{
+    font-weight: bold;
+}
+
+.title-link {
+    text-decoration: none;
+    color: black;
+}
