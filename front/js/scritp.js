@@ -65,7 +65,7 @@ async function actualizarVista() {
 }
 
 function cargarSemestresDesdeAPI() {
-    fetch('http://localhost:3000/api', {
+    fetch('http://localhost:3000/graphql', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -111,7 +111,7 @@ function cargarSemestresDesdeAPI() {
 
 function guardarSemestreEnServidor(nombre, descripcion, anno, inicio, final, color) {
     
-    fetch('http://localhost:3000/api', {
+    fetch('http://localhost:3000/graphql', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -181,7 +181,7 @@ function eliminarElemento(indice) {
     // Agrega un evento al botón de aceptar
     document.getElementById("btnAceptar").addEventListener("click", function () {
         //Lo eleminamos del servidor
-        fetch('http://localhost:3000/api', {
+        fetch('http://localhost:3000/graphql', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -212,7 +212,7 @@ function eliminarElemento(indice) {
         document.body.removeChild(alertDiv);
     });
 }
-
+    
 var socket = io.connect('http://localhost:3000/'); // Conectarse al servidor Socket.IO
 
 socket.on('semestreCreado', function(data) {

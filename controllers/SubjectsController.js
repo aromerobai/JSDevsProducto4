@@ -1,5 +1,6 @@
 const { gql } = require("apollo-server-express");
 const Subject = require("../models/Subject");
+const SUBJECT_UPDATED = 'SUBJECT_UPDATED';
 
 const SubjecttypeDefs = gql`
   type Subject {
@@ -28,6 +29,9 @@ const SubjecttypeDefs = gql`
     deleteSubject(id: ID): String
     updateSubjectState(id: ID!, newState: String!): Subject
   }
+  type Subscription {
+    subjectUpdated: Subject
+  }
 `; 
 
 const Subjectresolvers = {
@@ -51,23 +55,32 @@ const Subjectresolvers = {
             io.emit('subjectEliminada', { status: "ok", message: "Se ha eliminado una Asignatura" });
             return "Task Deleted";
         },
-        async updateSubjectState(_, { id, newState }) {
+        async updateSubjectState(_, { id, newState }, context) {
           try {
               const subject = await Subject.findById(id);
               if (!subject) {
                   throw new Error("La asignatura no fue encontrada.");
               }
-  
+              
               // Actualiza el estado de la asignatura con el nuevo estado proporcionado
               subject.estado = newState;
               await subject.save();
-  
+
+              // Subscripciones
+              const { pubsub } = context;
+              pubsub.publish(SUBJECT_UPDATED, { subjectUpdated: subject });
+              
               return subject;
           } catch (error) {
               throw new Error(`Error al actualizar el estado de la asignatura: ${error}`);
           }
       },
-    }
+    }, 
+    Subscription: {
+      subjectUpdated: {
+        subscribe: () => pubsub.asyncIterator([SUBJECT_UPDATED])
+      },
+    },
   };
 
   module.exports = {

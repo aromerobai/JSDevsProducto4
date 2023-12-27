@@ -9,6 +9,7 @@ add_button.addEventListener("click", createCard);
 const id_div = "drag";
 var i = 0;
 
+
 //Inicializo las asignaturas
 (async () => {
   getAllSubjects()
@@ -43,6 +44,7 @@ suspendida_pannel.addEventListener("drop", function (event) {
   handleDrop(event, suspendida_pannel);
 });
 
+
 function handleDrop(event, panel) {
   event.preventDefault();
   const data = event.dataTransfer.getData("text");
@@ -60,7 +62,6 @@ function yourFunctionToHandleDrop(draggedElement, panel) {
   const inputHidden = draggedElement.querySelector('input[type="hidden"]');
   if (inputHidden) {
     id_asigntura = inputHidden.value;
-    console.log("Valor del input hidden:", id_asigntura);
   } else {
     console.log(
       "No se encontró el input hidden dentro del elemento arrastrado."
@@ -72,9 +73,7 @@ function yourFunctionToHandleDrop(draggedElement, panel) {
     const h2Element = colTitle.querySelector("h2");
     if (h2Element) {
       estado_asignatura = h2Element.textContent;
-      console.log("Contenido del h2 Primero:", estado_asignatura);
       estado_asignatura = estado_asignatura.replace(/\+/g, "").trim();
-      console.log("Contenido del h2 Segundo:", estado_asignatura);
     } else {
       console.log("No se encontró el elemento h2 dentro de col-title.");
     }
@@ -87,7 +86,8 @@ function yourFunctionToHandleDrop(draggedElement, panel) {
   updateSubjectStateMutation(id_asigntura, estado_asignatura)
     .then((updatedSubject) => {
       console.log("Asignatura actualizada:", updatedSubject);
-      // Realiza las acciones necesarias con la asignatura actualizada
+      // Mandamos un mensaje al servidor Socket.IO------------------------------------------------------
+      socket.emit('subjectUpdated', { status: "ok", message: "Se ha actualizado una Asignatura" });
     })
     .catch((error) => {
       // Manejo de errores
@@ -452,7 +452,7 @@ function guardarSubjectEnServidor(
   estado
 ) {
   return new Promise((resolve, reject) => {
-    fetch("http://localhost:3000/api", {
+    fetch("http://localhost:3000/graphql", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -505,7 +505,7 @@ function guardarSubjectEnServidor(
 
 async function getAllSubjects() {
   try {
-    const response = await fetch("http://localhost:3000/api", {
+    const response = await fetch("http://localhost:3000/graphql", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -549,7 +549,7 @@ async function getAllSubjects() {
 }
 
 const updateSubjectStateMutation = async (id, newState) => {
-  const graphqlUrl = "http://localhost:3000/api"; // La URL de tu API GraphQL
+  const graphqlUrl = "http://localhost:3000/graphql"; // La URL de tu API GraphQL
 
   const requestBody = {
     query: `
@@ -578,7 +578,7 @@ const updateSubjectStateMutation = async (id, newState) => {
       },
       body: JSON.stringify(requestBody),
     });
-
+    
     const data = await response.json();
     return data.data.updateSubjectState;
   } catch (error) {
@@ -589,7 +589,7 @@ const updateSubjectStateMutation = async (id, newState) => {
 
 function eliminarAsignaturaEnServidor(id) {
   return new Promise((resolve, reject) => {
-    fetch("http://localhost:3000/api", {
+    fetch("http://localhost:3000/graphql", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

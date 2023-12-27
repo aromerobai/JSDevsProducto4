@@ -91,11 +91,16 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
         console.error('Formulario no encontrado');
     }
+    /****************************************************************************************** */
+    socket.on('subjectUpdatedNotification', (data) => {
+        console.log('subjectUpdatedNotification evento recibido:', data);
+        this.location.reload();
+    });
 });
 
 async function cargarSemestresDesdeAPI() {
     try {
-        const response = await fetch('http://localhost:3000/api', {
+        const response = await fetch('http://localhost:3000/graphql', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
