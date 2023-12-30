@@ -93,8 +93,41 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     /****************************************************************************************** */
     socket.on('subjectUpdatedNotification', (data) => {
-        console.log('subjectUpdatedNotification evento recibido:', data);
-        this.location.reload();
+
+        const asignaturas_pannel = document.getElementById("asignaturas-pannel");
+        const aprobado_pannel = document.getElementById("aprobada-pannel");
+        const suspendida_pannel = document.getElementById("suspendida-pannel");
+
+        (async () => {
+            getAllSubjects()
+              .then((subjects) => {
+                while (asignaturas_pannel.children.length > 1) {
+                    asignaturas_pannel.removeChild(asignaturas_pannel.lastChild);
+                }
+        
+                while (aprobado_pannel.children.length > 1) {
+                    aprobado_pannel.removeChild(aprobado_pannel.lastChild);
+                }
+        
+                while (suspendida_pannel.children.length > 1) {
+                    suspendida_pannel.removeChild(suspendida_pannel.lastChild);
+                }
+                subjects.forEach((subject) => {
+                  if (subject.idSemestre == id) {
+                    createCardConDatos(
+                      subject.id,
+                      subject.nombre,
+                      subject.descripcion,
+                      subject.dificultad,
+                      subject.estado
+                    );
+                  }
+                });
+              })
+              .catch((error) => {
+                console.error("Ocurrió un error al obtener las asignaturas:", error);
+              });
+          })();
     });
 });
 

@@ -39,7 +39,6 @@ io.on("connection", (socket) => {
   console.log("Un cliente se ha conectado");
   socket.on('subjectUpdated', (data) => {
     console.log('subjectUpdated event received:', data);
-
     io.emit('subjectUpdatedNotification', data);
   });
 });
