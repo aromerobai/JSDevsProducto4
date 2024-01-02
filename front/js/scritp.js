@@ -65,7 +65,7 @@ async function actualizarVista() {
 }
 
 function cargarSemestresDesdeAPI() {
-    fetch('http://localhost:3000/graphql', {
+    fetch('https://p9yw84-3000.csb.app/graphql', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -111,7 +111,7 @@ function cargarSemestresDesdeAPI() {
 
 function guardarSemestreEnServidor(nombre, descripcion, anno, inicio, final, color) {
     
-    fetch('http://localhost:3000/graphql', {
+    fetch('https://p9yw84-3000.csb.app/graphql', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -181,7 +181,7 @@ function eliminarElemento(indice) {
     // Agrega un evento al botón de aceptar
     document.getElementById("btnAceptar").addEventListener("click", function () {
         //Lo eleminamos del servidor
-        fetch('http://localhost:3000/graphql', {
+        fetch('https://p9yw84-3000.csb.app/graphql', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -213,7 +213,7 @@ function eliminarElemento(indice) {
     });
 }
     
-var socket = io.connect('http://localhost:3000/'); // Conectarse al servidor Socket.IO
+var socket = io.connect('https://p9yw84-3000.csb.app/'); // Conectarse al servidor Socket.IO
 
 socket.on('semestreCreado', function(data) {
     if (data.status === "ok") {
