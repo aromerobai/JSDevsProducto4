@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 async function cargarSemestresDesdeAPI() {
     try {
-        const response = await fetch('http://localhost:3000/graphql', {
+        const response = await fetch('https://p9yw84-3000.csb.app/graphql', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
